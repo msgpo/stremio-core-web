@@ -1,5 +1,5 @@
-use super::encoder::{encode_uri_component, encode_query_params};
-use super::meta_preview::{DeepLinks as MetaPreviewDeepLinks, MetaPreviewWithDeepLinks};
+use super::encoder::{encode_query_params, encode_uri_component};
+use super::meta_preview::MetaPreviewWithDeepLinks;
 use super::resource_loadable::{
     DeepLinks as ResourceLoadableDeepLinks, ResourceLoadableWithDeepLinks,
 };
@@ -29,30 +29,7 @@ impl<'a> CatalogsWithExtraAndDeepLinks<'a> {
                             ResourceContent::Ready(meta_previews) => ResourceContent::Ready(
                                 meta_previews
                                     .iter()
-                                    .map(|meta_preview| MetaPreviewWithDeepLinks {
-                                        meta_preview: &meta_preview,
-                                        deep_links: MetaPreviewDeepLinks {
-                                            meta_details_videos: format!(
-                                                "#/metadetails/{}/{}",
-                                                encode_uri_component(&meta_preview.type_name),
-                                                encode_uri_component(&meta_preview.id)
-                                            ),
-                                            meta_details_streams: meta_preview
-                                                .behavior_hints
-                                                .default_video_id
-                                                .as_ref()
-                                                .map(|default_video_id| {
-                                                    format!(
-                                                        "#/metadetails/{}/{}/{}",
-                                                        encode_uri_component(
-                                                            &meta_preview.type_name
-                                                        ),
-                                                        encode_uri_component(&meta_preview.id),
-                                                        encode_uri_component(&default_video_id)
-                                                    )
-                                                }),
-                                        },
-                                    })
+                                    .map(MetaPreviewWithDeepLinks::new)
                                     .collect(),
                             ),
                             ResourceContent::Loading => ResourceContent::Loading,
