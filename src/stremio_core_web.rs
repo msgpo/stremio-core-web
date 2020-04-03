@@ -1,5 +1,5 @@
-use super::app_model::{AppModel, ModelFieldName};
-use console_error_panic_hook;
+use crate::app_model::{AppModel, ModelFieldName};
+use crate::deep_links::catalogs_with_extra::CatalogsWithExtraAndDeepLinks;
 use env_web::Env;
 use futures::future;
 use futures::stream::Stream;
@@ -73,13 +73,17 @@ impl StremioCoreWeb {
                 ModelFieldName::ContinueWatchingPreview => {
                     JsValue::from_serde(&model.continue_watching_preview).unwrap()
                 }
-                ModelFieldName::Board => JsValue::from_serde(&model.board).unwrap(),
+                ModelFieldName::Board => {
+                    JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.board)).unwrap()
+                }
                 ModelFieldName::Discover => JsValue::from_serde(&model.discover).unwrap(),
                 ModelFieldName::Library => JsValue::from_serde(&model.library).unwrap(),
                 ModelFieldName::ContinueWatching => {
                     JsValue::from_serde(&model.continue_watching).unwrap()
                 }
-                ModelFieldName::Search => JsValue::from_serde(&model.search).unwrap(),
+                ModelFieldName::Search => {
+                    JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.search)).unwrap()
+                }
                 ModelFieldName::MetaDetails => JsValue::from_serde(&model.meta_details).unwrap(),
                 ModelFieldName::Addons => JsValue::from_serde(&model.addons).unwrap(),
                 ModelFieldName::AddonDetails => JsValue::from_serde(&model.addon_details).unwrap(),
