@@ -1,4 +1,4 @@
-use super::encoder::encode_uri_component;
+use super::encode_uri_component;
 use serde::Serialize;
 use stremio_core::types::MetaPreview;
 

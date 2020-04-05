@@ -1,6 +1,5 @@
 use crate::app_model::{AppModel, ModelFieldName};
-use crate::deep_links::catalog_with_filters::CatalogWithFiltersAndDeepLinks;
-use crate::deep_links::catalogs_with_extra::CatalogsWithExtraAndDeepLinks;
+use crate::deep_links::{CatalogWithFiltersAndDeepLinks, CatalogsWithExtraAndDeepLinks};
 use env_web::Env;
 use futures::future;
 use futures::stream::Stream;

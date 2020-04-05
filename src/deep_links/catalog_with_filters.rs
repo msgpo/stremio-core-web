@@ -1,4 +1,4 @@
-use super::meta_preview::MetaPreviewWithDeepLinks;
+use super::common::MetaPreviewWithDeepLinks;
 use serde::Serialize;
 use stremio_core::state_types::models::catalog_with_filters::{
     CatalogWithFilters, Selectable, Selected,
