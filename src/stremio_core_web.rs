@@ -66,34 +66,31 @@ impl StremioCoreWeb {
     }
     pub fn get_state(&self, model_field: &JsValue) -> JsValue {
         let model = &*self.runtime.app.read().unwrap();
-        if let Ok(model_field) = model_field.into_serde::<ModelFieldName>() {
-            match model_field {
-                ModelFieldName::Ctx => JsValue::from_serde(&model.ctx).unwrap(),
-                ModelFieldName::LibraryItems => JsValue::from_serde(&model.library_items).unwrap(),
-                ModelFieldName::ContinueWatchingPreview => {
-                    JsValue::from_serde(&model.continue_watching_preview).unwrap()
-                }
-                ModelFieldName::Board => {
-                    JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.board)).unwrap()
-                }
-                ModelFieldName::Discover => JsValue::from_serde(&model.discover).unwrap(),
-                ModelFieldName::Library => JsValue::from_serde(&model.library).unwrap(),
-                ModelFieldName::ContinueWatching => {
-                    JsValue::from_serde(&model.continue_watching).unwrap()
-                }
-                ModelFieldName::Search => {
-                    JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.search)).unwrap()
-                }
-                ModelFieldName::MetaDetails => JsValue::from_serde(&model.meta_details).unwrap(),
-                ModelFieldName::Addons => JsValue::from_serde(&model.addons).unwrap(),
-                ModelFieldName::AddonDetails => JsValue::from_serde(&model.addon_details).unwrap(),
-                ModelFieldName::StreamingServer => {
-                    JsValue::from_serde(&model.streaming_server).unwrap()
-                }
-                ModelFieldName::Player => JsValue::from_serde(&model.player).unwrap(),
+        match model_field.into_serde::<ModelFieldName>() {
+            Ok(ModelFieldName::Ctx) => JsValue::from_serde(&model.ctx).unwrap(),
+            Ok(ModelFieldName::LibraryItems) => JsValue::from_serde(&model.library_items).unwrap(),
+            Ok(ModelFieldName::ContinueWatchingPreview) => {
+                JsValue::from_serde(&model.continue_watching_preview).unwrap()
             }
-        } else {
-            JsValue::from_serde(model).unwrap()
+            Ok(ModelFieldName::Board) => {
+                JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.board)).unwrap()
+            }
+            Ok(ModelFieldName::Discover) => JsValue::from_serde(&model.discover).unwrap(),
+            Ok(ModelFieldName::Library) => JsValue::from_serde(&model.library).unwrap(),
+            Ok(ModelFieldName::ContinueWatching) => {
+                JsValue::from_serde(&model.continue_watching).unwrap()
+            }
+            Ok(ModelFieldName::Search) => {
+                JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.search)).unwrap()
+            }
+            Ok(ModelFieldName::MetaDetails) => JsValue::from_serde(&model.meta_details).unwrap(),
+            Ok(ModelFieldName::Addons) => JsValue::from_serde(&model.addons).unwrap(),
+            Ok(ModelFieldName::AddonDetails) => JsValue::from_serde(&model.addon_details).unwrap(),
+            Ok(ModelFieldName::StreamingServer) => {
+                JsValue::from_serde(&model.streaming_server).unwrap()
+            }
+            Ok(ModelFieldName::Player) => JsValue::from_serde(&model.player).unwrap(),
+            _ => JsValue::NULL,
         }
     }
 }
