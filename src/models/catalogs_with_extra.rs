@@ -1,4 +1,4 @@
-use super::common::{MetaPreviewWithDeepLinks, ResourceLoadableWithDeepLinks};
+use crate::deep_links::{MetaPreviewWithDeepLinks, ResourceLoadableWithDeepLinks};
 use serde::Serialize;
 use stremio_core::state_types::models::catalogs_with_extra::{CatalogsWithExtra, Selected};
 use stremio_core::state_types::models::common::ResourceContent;
