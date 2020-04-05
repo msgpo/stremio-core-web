@@ -59,9 +59,9 @@ impl StremioCoreWeb {
                 self.runtime.dispatch(&message)
             };
             Env::exec(effects);
-            JsValue::from(true)
+            JsValue::TRUE
         } else {
-            JsValue::from(false)
+            JsValue::FALSE
         }
     }
     pub fn get_state(&self, model_field: &JsValue) -> JsValue {
