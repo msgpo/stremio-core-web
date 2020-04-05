@@ -18,14 +18,14 @@ pub struct MetaCatalogWithDeepLinks<'a> {
 
 #[derive(Serialize)]
 pub struct CatalogsWithExtraAndDeepLinks<'a> {
-    pub selected: &'a Option<Selected>,
+    pub selected: Option<Selected>,
     pub catalog_resources: Vec<MetaCatalogWithDeepLinks<'a>>,
 }
 
 impl<'a> CatalogsWithExtraAndDeepLinks<'a> {
     pub fn new(catalogs_with_extra: &'a CatalogsWithExtra) -> Self {
         CatalogsWithExtraAndDeepLinks {
-            selected: &catalogs_with_extra.selected,
+            selected: catalogs_with_extra.selected.to_owned(),
             catalog_resources: catalogs_with_extra
                 .catalog_resources
                 .iter()
