@@ -1,4 +1,5 @@
 use crate::app_model::{AppModel, ModelFieldName};
+use crate::deep_links::catalog_with_filters::CatalogWithFiltersAndDeepLinks;
 use crate::deep_links::catalogs_with_extra::CatalogsWithExtraAndDeepLinks;
 use env_web::Env;
 use futures::future;
@@ -75,7 +76,9 @@ impl StremioCoreWeb {
             Ok(ModelFieldName::Board) => {
                 JsValue::from_serde(&CatalogsWithExtraAndDeepLinks::new(&model.board)).unwrap()
             }
-            Ok(ModelFieldName::Discover) => JsValue::from_serde(&model.discover).unwrap(),
+            Ok(ModelFieldName::Discover) => {
+                JsValue::from_serde(&CatalogWithFiltersAndDeepLinks::new(&model.discover)).unwrap()
+            }
             Ok(ModelFieldName::Library) => JsValue::from_serde(&model.library).unwrap(),
             Ok(ModelFieldName::ContinueWatching) => {
                 JsValue::from_serde(&model.continue_watching).unwrap()
