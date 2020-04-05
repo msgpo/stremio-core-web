@@ -1,8 +1,7 @@
 use super::{encode_query_params, encode_uri_component, MetaPreviewWithDeepLinks};
 use serde::Serialize;
-use stremio_core::state_types::models::common::{ResourceContent, ResourceLoadable};
+use stremio_core::state_types::models::common::ResourceContent;
 use stremio_core::types::addons::ResourceRequest;
-use stremio_core::types::MetaPreview;
 
 #[derive(Serialize)]
 #[serde(untagged)]
@@ -18,26 +17,20 @@ pub struct ResourceLoadableWithDeepLinks<'a, T> {
 }
 
 impl<'a> ResourceLoadableWithDeepLinks<'a, Vec<MetaPreviewWithDeepLinks<'a>>> {
-    pub fn new(resource_loadable: &'a ResourceLoadable<Vec<MetaPreview>>) -> Self {
+    pub fn new(
+        request: &'a ResourceRequest,
+        content: ResourceContent<Vec<MetaPreviewWithDeepLinks<'a>>>,
+    ) -> Self {
         ResourceLoadableWithDeepLinks {
-            request: &resource_loadable.request,
-            content: match &resource_loadable.content {
-                ResourceContent::Ready(meta_previews) => ResourceContent::Ready(
-                    meta_previews
-                        .iter()
-                        .map(MetaPreviewWithDeepLinks::new)
-                        .collect(),
-                ),
-                ResourceContent::Loading => ResourceContent::Loading,
-                ResourceContent::Err(error) => ResourceContent::Err(error.to_owned()),
-            },
+            request,
+            content,
             deep_links: DeepLinks::MetaCatalog {
                 discover: format!(
                     "#/discover/{}/{}/{}?{}",
-                    encode_uri_component(&resource_loadable.request.base),
-                    encode_uri_component(&resource_loadable.request.path.type_name),
-                    encode_uri_component(&resource_loadable.request.path.id),
-                    encode_query_params(&resource_loadable.request.path.extra)
+                    encode_uri_component(&request.base),
+                    encode_uri_component(&request.path.type_name),
+                    encode_uri_component(&request.path.id),
+                    encode_query_params(&request.path.extra)
                 ),
             },
         }

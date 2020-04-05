@@ -1,6 +1,7 @@
 use super::common::{MetaPreviewWithDeepLinks, ResourceLoadableWithDeepLinks};
 use serde::Serialize;
 use stremio_core::state_types::models::catalogs_with_extra::{CatalogsWithExtra, Selected};
+use stremio_core::state_types::models::common::ResourceContent;
 
 #[derive(Serialize)]
 pub struct CatalogsWithExtraAndDeepLinks<'a> {
@@ -16,7 +17,21 @@ impl<'a> CatalogsWithExtraAndDeepLinks<'a> {
             catalog_resources: catalogs_with_extra
                 .catalog_resources
                 .iter()
-                .map(ResourceLoadableWithDeepLinks::new)
+                .map(|resource_loadable| {
+                    ResourceLoadableWithDeepLinks::new(
+                        &resource_loadable.request,
+                        match &resource_loadable.content {
+                            ResourceContent::Ready(meta_previews) => ResourceContent::Ready(
+                                meta_previews
+                                    .iter()
+                                    .map(MetaPreviewWithDeepLinks::new)
+                                    .collect(),
+                            ),
+                            ResourceContent::Loading => ResourceContent::Loading,
+                            ResourceContent::Err(error) => ResourceContent::Err(error.to_owned()),
+                        },
+                    )
+                })
                 .collect(),
         }
     }
